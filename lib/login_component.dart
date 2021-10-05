@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sensores/request.dart';
 import 'package:sensores/welcome_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginComponent extends StatefulWidget {
   const LoginComponent({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class LoginComponent extends StatefulWidget {
 
 class _LoginComponentState extends State<LoginComponent> {
   var _usrCtrl, _passCtrl, _nameCtrl;
+  final Future<SharedPreferences> _localuser = SharedPreferences.getInstance();
   bool _authType = true;
 
   var _emailCtrl;
@@ -31,7 +33,7 @@ class _LoginComponentState extends State<LoginComponent> {
   }
 
   @override
-  void initState() {
+  initState() {
     super.initState();
     _usrCtrl = TextEditingController();
     _passCtrl = TextEditingController();
@@ -39,6 +41,12 @@ class _LoginComponentState extends State<LoginComponent> {
     _emailCtrl = TextEditingController();
     _lastNameCtrl = TextEditingController();
     _phoneCtrl = TextEditingController();
+    _load();
+  }
+
+  _load() async {
+    var localuser = await _localuser;
+    _emailCtrl.text = localuser.getString('email') ?? '';
   }
 
   _entry() => entry(_emailCtrl.text, _passCtrl.text);

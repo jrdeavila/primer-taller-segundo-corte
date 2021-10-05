@@ -7,6 +7,7 @@ Future<String> storeResponse(Map<String, dynamic> jsonData) async {
     Future<SharedPreferences> _localuser = SharedPreferences.getInstance();
     final SharedPreferences localuser = await _localuser;
     localuser.setString('nombres', jsonData['nombres']);
+    localuser.setString('email', jsonData['email']);
     localuser.setString('color', jsonData['color']);
     localuser.setString('estado', jsonData['estado']);
     localuser.setString('acceso', jsonData['acceso']);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'main.dart';
+
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
@@ -11,7 +13,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final Future<SharedPreferences> _localuser = SharedPreferences.getInstance();
   String? names, lastNames, state, access, color;
-  @override
+
   Future<bool> _loadData() async {
     final SharedPreferences localuser = await _localuser;
     names = localuser.getString('nombres');
@@ -88,8 +90,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       bottomNavigationBar: BottomAppBar(
         child: Padding(
             padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-                onPressed: () => _removeData(), child: const Text("REMOVE DATA"))),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ElevatedButton(
+                onPressed: () => _removeData(),
+                child: const Text("REMOVE DATA"),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              ElevatedButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreem())),
+                  child: const Text("LOG OUT"))
+            ])),
       ),
     );
   }
@@ -97,12 +115,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   _removeData() async {
     final userdata = await _localuser;
     userdata.remove('nombres');
+    userdata.remove('email');
     userdata.remove('apellidos');
     userdata.remove('telfono');
     userdata.remove('acceso');
     userdata.remove('color');
     userdata.remove('estado');
-    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const HomeScreem()));
   }
 
   Widget _item(title, content) => Row(

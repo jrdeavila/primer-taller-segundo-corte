@@ -33,20 +33,16 @@ class _HomeScreemState extends State<HomeScreem> {
   final Future<SharedPreferences> _localuser = SharedPreferences.getInstance();
   bool _stored = false;
 
-  _verifyStored() async {
-    final localuser = await _localuser;
-    if (localuser.getString('nombres') != null) {
-      setState(() {
-        _stored = true;
-      });
-    }
+  @override
+  initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: null,
-      body: _stored ? const WelcomeScreen() : const LoginComponent(),
+      body:  LoginComponent(),
     );
   }
 }
